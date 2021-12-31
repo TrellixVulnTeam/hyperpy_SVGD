@@ -1,100 +1,167 @@
-from abc import ABC, abstractmethod
+import numpy as np
 
-class Hypergraph(ABC):
-    """An abstract class for representing hypergraphs.
+class Vertex:
 
-    Attributes:
-        __inc_mat (unassigned): The incidence matrix of the hypergraph.
-        __vnames (list, optional): A list of vertex names. Defaults to None.
-        __enames (list, optional): A list of hyperedge names. Defaults to None.
-        __vweights (list, optional): A list of vertex names. Defaults to None.
-        __eweights (list, optional): A list of hyperedge weights. Defaults to None.
-    """
-
-    #=========================CONSTRUCTOR=================================
-    def __init__(self, inc_mat, vnames = None, enames = None, vweights = None, eweights = None):
-        """Class constructor to create an abstract hypergraph object.
+    def __int__(self, hype, name, weight):
+        """Constructor for Vertex class.
 
         Args:
-            inc_mat (unassigned): A representation of the hypergraph incidence matrix.
-            vnames (list, optional): A list of vertex names. Defaults to None.
-            enames (list, optional): A list of hyperedge names. Defaults to None.
-            vweights (list, optional): A list of vertex weights. Defaults to None.
-            eweights (list, optional): A list of hyperedge weights. Defaults to None.
+            hype (Hypergraph): The hypergraph the vertex belongs to.
+            name (String): The name of the vertex.
+            weight (Float): The weight associated with the vertex.
         """
-        self.__inc_mat = inc_mat
-        self.rename_vertices(vnames)
-        self.rename_hyperedges(enames)
-        self.set_vertex_weights(vweights)
-        self.set_hyperedge_weights(eweights)
+        #TODO Validate the hype input
+        self.__hype = hype
+        self.set_name(name)
+        self.set_weight(weight)
     
-    #=========================GETTERS AND SETTERS=========================
+    def parent_hypergraph(self):
+        """Return the hypergraph that the vertex belongs to.
+
+        Returns:
+            [Hypergraph]: The hypergraph that the vertex belongs to.
+        """
+        return self.__hype
+
+    def name(self):
+        """Return the name of the vertex.
+
+        Returns:
+            String: The name of the vertex.
+        """
+        return self.__name
+    
+    def weight(self):
+        """Return the weight of a vertex.
+
+        Returns:
+            Float: The weight associated with a vertex.
+        """
+        return self.__weight
+
+    def set_name(self, name):
+        """Set the name of a vertex.
+
+        Args:
+            name (String): The new name for the vertex.
+        """
+        self.__name = name
+
+    def set_weight(self, weight):
+        """Set the weight of a vertex.
+
+        Args:
+            weight (Float): The new weight for the vertex.
+        """
+        self.__weight = weight
+
+class Hyperedge:
+
+    def __init__(self, hype, name, vertices, weight):
+        """Constructor for Hyperedge class.
+
+        Args:
+            name (String): The name of the hyperedge
+            vertices (list): A list of the vertices contained in the hyperedge
+            weight (Float): The weight associated with the hyepredge.
+        """
+        #TODO Validate the hype input
+        self.__hype = hype
+        self.set_name(name)
+        self.set_vertices(vertices)
+        self.set_weight(weight)
+    
+    def parent_hypergraph(self):
+        """Return the hypergraph that the hyperedge belongs to.
+
+        Returns:
+            Hypergraph: The hypergraph object that the hyperedge belongs to.
+        """
+        return self.__hype
+
+    def name(self):
+        """Access the name of the hyperedge.
+
+        Returns:
+            String: The name of the hyperedge.
+        """
+        return self.__name
+
     def vertices(self):
-        """Access the names of the vertices of the hypergraph.
+        """Access the vertices contained in the hyperedge.
 
         Returns:
-            list: The names of the vertices of the hypergraph
+            list: A list of the vertices contained in the hyperedge.
         """
-        return self.__vnames
-
-    def hyperedges(self):
-        """Access the names of the hyperedges of the hypergraph
-
-        Returns:
-            list: The names of the hyperedges of the hypergraph
-        """
-        return self.__enames
-
-    def vertex_weights(self):
-        """Access the weights of the vertices of the hypergraph.
-
-        Returns:
-            list: A list of the weights of the vertices of the hypergraph.
-        """
-        return self.__vweights
+        return self.__vertices
     
-    def hyperedge_weights(self):
-        """Access the weights of the hyperedges of the hypergraph.
+    def weight(self):
+        """Access the weight of the hyperedge.
 
         Returns:
-            list: A list of the weights of the hyperedges of the hypergraph.
+            Float: The weight asspciated with the hyperedge.
         """
-        return self.__eweights
-
-    @abstractmethod
-    def rename_vertices(self, vnames):
-        """Set the names of the vertices of a hypergraph. If vnames is None then the vertex names are set to sequential
-        integers (as strings).
-
-        Args:
-            vnames (list): A list of the names to use for the vertices of the hyeprgraph (if None then defaults are used).
-        """
-        self.__vnames = vnames
+        return self.__weight
     
-    @abstractmethod
-    def rename_hyperedges(self, enames):
-        """Set the names of the hyperedges of a hypergraph. If enames is None then the hyperedge names are set to sequential
-        integers (as strings).
+    def set_name(self, name):
+        """Set the name of the hyperedge.
 
         Args:
-            enames (list): A list of the names to use for the hyperedges of the hypergraph (if None then defaults are used).
+            name (String): The new name of the hyperedge.
         """
-        self.__enames = enames
-
-    @abstractmethod
-    def set_vertex_weights(self, vweights):
-        """Set the weights of the vertices of a hypergraph. If vweights is None then the vertex weights are all set to 1.
+        self.__name = name
+    
+    def set_vertices(self, vertices):
+        """Set the vertices contained in a hyperedge.
 
         Args:
-            vweights (list): A list of the weights to use for the vertices of the hypergraph (if None then defaults are used).
+            vertices (list): A list of the vertices contained in the hyperedge.
         """
-        self.__vweights = vweights
-
-    @abstractmethod
-    def set_hyperedge_weights(self, eweights):
-        """Set the weights of the hyperedges of the hypergraph. If eweights is None then the hyperedge weights are all set to 1.
+        self.__vertices = vertices
+    
+    def set_weight(self, weight):
+        """Set the weight of the hyperedge.
 
         Args:
-            eweights (list): A list of the weights to use for the hyperedges of the hypergraph (if None then defaults are used).
+            weight (Float): The weight to set the hyperedge weight to.
         """
-        self.__eweights = eweights
+        self.__weight = weight
+    
+class Hypergraph:
+
+    #TODO Write Hyeprgraph constructor
+    def __init__(self, name, elist, vnames, enames, vweights = None, eweights = None):
+        self.set_name(name)
+        if (len(elist) != len(vnames)):
+            raise ValueError
+        if (len(elist) != len(enames)):
+            raise ValueError
+        if (vweights is None):
+            vweights =np.ones(len(enames))
+        elif (len(elist) != len(vnames)):
+            raise ValueError
+        if (eweights is None):
+            eweights =np.ones(len(enames))
+        elif (len(elist) != len(eweights)):
+            raise ValueError
+        
+        vertex_set = []
+        for i in range(len(enames)):
+            vertex_set.append(Vertex(hype = self, name = vnames[i], weight = vweights[i]))
+        self.__vertex_set = vertex_set
+
+    
+    def name(self):
+        return self.__name
+    
+    def vertex_set(self):
+        return self.__vertex_set
+    
+    def hyperedge_set(self):
+        return self.__hyperedge_set
+    
+    def set_name(self, name):
+        self.__name = name
+
+v = [1,2,3,4,5,6,7,8,9]
+print(v[[1,4,5]])
