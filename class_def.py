@@ -2,7 +2,7 @@ import numpy as np
 
 class Vertex:
 
-    def __int__(self, hype, name, weight):
+    def __init__(self, hype, name, weight):
         """Constructor for Vertex class.
 
         Args:
@@ -132,25 +132,41 @@ class Hypergraph:
     #TODO Write Hyeprgraph constructor
     def __init__(self, name, elist, vnames, enames, vweights = None, eweights = None):
         self.set_name(name)
-        if (len(elist) != len(vnames)):
-            raise ValueError
-        if (len(elist) != len(enames)):
-            raise ValueError
+        
         if (vweights is None):
-            vweights =np.ones(len(enames))
-        elif (len(elist) != len(vnames)):
-            raise ValueError
+            vweights = np.ones(len(vnames))
         if (eweights is None):
-            eweights =np.ones(len(enames))
-        elif (len(elist) != len(eweights)):
-            raise ValueError
+            eweights = np.ones(len(enames))
         
         vertex_set = []
-        for i in range(len(enames)):
+        for i in range(len(vnames)):
             vertex_set.append(Vertex(hype = self, name = vnames[i], weight = vweights[i]))
         self.__vertex_set = vertex_set
 
+        hyperedge_set = []
+        for i in range(len(elist)):
+            vertices = []
+            for vname in elist[i]:
+                vertex = self.get_vertex_by_name(vname)
+                vertices.append(vertex)
+            hyperedge_set.append(Hyperedge(hype = self, name = enames[i], vertices = vertices, weight = eweights[i]))
+        self.__hyperedge_set = hyperedge_set
+
+
+    #=========================METHODS===============================
+    def get_vertex_by_name(self, name):
+        for v in self.vertex_set():
+            if (v.name() == name):
+                return v
+        return None
     
+    def get_hyperedge_by_name(self, name):
+        for h in self.hyperedge_set():
+            if (h.name() == name):
+                return h
+
+
+    #=========================GETTERS AND SETTERS=========================
     def name(self):
         return self.__name
     
@@ -163,5 +179,13 @@ class Hypergraph:
     def set_name(self, name):
         self.__name = name
 
-v = [1,2,3,4,5,6,7,8,9]
-print(v[[1,4,5]])
+h = Hypergraph(name = "MyHypergraph", elist = [["a","b","c"], ["b","c","d"]], vnames = ["a", "b", "c", "d"], enames = ["h1", "h2"])
+
+print("Hypergraph:")
+print("\tName:", h.name())
+print("\tNumber of Vertices:", len(h.vertex_set()))
+print("\tNumber of Hyperedges:", len(h.hyperedge_set()))
+print("\tVertex Names", h.vertex_set())
+
+#TODO Create vertex set object
+#TODO Create hyperedge set object
