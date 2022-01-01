@@ -129,8 +129,17 @@ class Hyperedge:
     
 class Hypergraph:
 
-    #TODO Write Hyeprgraph constructor
-    def __init__(self, name, elist, vnames, enames, vweights = None, eweights = None):
+    def __init__(self, elist, vnames, enames, vweights = None, eweights = None, name = "Hypergraph"):
+        """Hypergraph Constructor
+
+        Args:
+            name (String, optional): The name of the hypergraph. Defaults to Hypergraph.
+            elist (list): [description]
+            vnames (list): [description]
+            enames (list): [description]
+            vweights (list, optional): [description]. Defaults to None.
+            eweights ([type], optional): [description]. Defaults to None.
+        """
         self.set_name(name)
         
         if (vweights is None):
@@ -178,14 +187,3 @@ class Hypergraph:
     
     def set_name(self, name):
         self.__name = name
-
-h = Hypergraph(name = "MyHypergraph", elist = [["a","b","c"], ["b","c","d"]], vnames = ["a", "b", "c", "d"], enames = ["h1", "h2"])
-
-print("Hypergraph:")
-print("\tName:", h.name())
-print("\tNumber of Vertices:", len(h.vertex_set()))
-print("\tNumber of Hyperedges:", len(h.hyperedge_set()))
-print("\tVertex Names", h.vertex_set())
-
-#TODO Create vertex set object
-#TODO Create hyperedge set object
