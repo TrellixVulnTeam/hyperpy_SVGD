@@ -1,4 +1,5 @@
 import numpy as np
+from itertools import chain
 
 class Vertex:
 
@@ -113,7 +114,7 @@ class Hyperedge:
         """Set the parent hypergraph of the hyperedge
 
         Args:
-            hype (Hypergraph): The hypergraph the hyperedge is a memeber of.
+            hype (Hypergraph): The hypergraph the hyperedge is a member
         """
         self.__hype = hype
     
@@ -207,6 +208,30 @@ class Hypergraph:
             if (h.name() == name):
                 return h
 
+    #TODO Test this vertex_neighbours function
+    def vertex_neighbors(self, vertex):
+        """Find the neighbours of a given vertex of a hypergraph
+
+        Args:
+            vertex (Vertex): The vertex to find the neighbours of.
+
+        Returns:
+            list: A list of the vertices that are adjacent to the given vertices.
+        """
+        #Neighbours of the vertex
+        neighbours = []
+        #Check every hyperedge as to whether it contains the vertex then append all vertices in the hyperedge to neighbours
+        for h in self.hyperedge_set():
+            if vertex in h.vertices():
+                neighbours.append(h.vertices())
+        #Unnest the neighbours list
+        neighbours = list(chain.from_iterable(neighbours))
+        #Make sure every element of the list is unique
+        neighbours_unique = []
+        for v in neighbours:
+            if (v not in neighbours_unique) & (v not in [vertex]):
+                neighbours_unique.append(v)
+        return neighbours_unique
 
     #=========================GETTERS AND SETTERS=========================
     def vertex_set(self):
