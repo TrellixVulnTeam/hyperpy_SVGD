@@ -160,16 +160,19 @@ class Hypergraph:
         """
         self.set_name(name)
         
+        #Adding vertex and hyepredge weights if they are not given
         if (vweights is None):
             vweights = np.ones(len(vnames))
         if (eweights is None):
             eweights = np.ones(len(enames))
         
+        #Creating vertex set
         vertex_set = []
         for i in range(len(vnames)):
             vertex_set.append(Vertex(hype = self, name = vnames[i], weight = vweights[i]))
         self.__vertex_set = vertex_set
 
+        #Creating hyperedge set
         hyperedge_set = []
         for i in range(len(elist)):
             vertices = []
