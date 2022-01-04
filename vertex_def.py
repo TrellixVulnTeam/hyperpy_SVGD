@@ -1,3 +1,6 @@
+from hypergraph_def import Hypergraph
+from vertex_def import Vertex
+
 class Vertex:
 
     #=========================CONSTRUCTOR=========================
