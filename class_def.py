@@ -3,6 +3,7 @@ from itertools import chain
 
 class Vertex:
 
+    #=========================CONSTRUCTOR=========================
     def __init__(self, hype, name, weight):
         """Constructor for Vertex class.
 
@@ -15,6 +16,7 @@ class Vertex:
         self.set_name(name)
         self.set_weight(weight)
     
+    #=========================GETTERS AND SETTERS=========================
     def parent_hypergraph(self):
         """Return the hypergraph that the vertex belongs to.
 
@@ -65,6 +67,7 @@ class Vertex:
 
 class Hyperedge:
 
+    #=========================CONSTRUCTOR=========================
     def __init__(self, hype, name, vertices, weight):
         """Constructor for Hyperedge class.
 
@@ -78,6 +81,7 @@ class Hyperedge:
         self.set_vertices(vertices)
         self.set_weight(weight)
     
+    #=========================GETTERS AND SETTERS=========================
     def parent_hypergraph(self):
         """Return the hypergraph that the hyperedge belongs to.
 
